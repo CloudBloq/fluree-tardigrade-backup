@@ -17,18 +17,19 @@ namespace FlureeTardigradeWorker
     }
     public  class BackupService:IBackupService
     {
-        private readonly IHostEnvironment _hostEnvironment; 
-        public IConfigurationRoot Configuration { get; private set; }
+        private readonly IHostEnvironment _hostEnvironment;
+        private readonly IConfiguration _configuration;
 
-        public BackupService(IHostEnvironment hostEnvironment)
+        public BackupService(IHostEnvironment hostEnvironment, IConfiguration configuration)
         {
             _hostEnvironment = hostEnvironment;
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(hostEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables(); 
-           Configuration = builder.Build();
+            _configuration = configuration;
+//            var builder = new ConfigurationBuilder()
+//                .SetBasePath(hostEnvironment.ContentRootPath)
+//                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+//                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", optional: true)
+//                .AddEnvironmentVariables(); 
+//           Configuration = builder.Build();
         }
         public async Task<FileObject> GetFlureeSnapshot(string fileName)
         {
@@ -46,9 +47,9 @@ namespace FlureeTardigradeWorker
         public async Task<int> UploadToCloud()
         {
             uplink.NET.Models.Scope.SetTempDirectory(System.IO.Path.GetTempPath());
-            var apiKey = Configuration["TardigradeCredential:ApiKey"];
-            var secret = Configuration["TardigradeCredential:Secret"];
-            var satelliteAddress = Configuration["TardigradeCredential:SatelliteAddress"]; 
+            var apiKey = _configuration["TardigradeCredential:ApiKey"];
+            var secret = _configuration["TardigradeCredential:Secret"];
+            var satelliteAddress = _configuration["TardigradeCredential:SatelliteAddress"]; 
             var scope = new uplink.NET.Models.Scope(apiKey, satelliteAddress, secret);
             var objectService = new ObjectService();
             // Listing buckets.

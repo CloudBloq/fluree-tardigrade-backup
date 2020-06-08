@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("dotnet-FlureeTardigradeWorker-5049B75E-45B6-40FE-957B-A82024E87541")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlureeTardigradeWorker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

@@ -58,4 +58,3 @@
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\obj\Debug\netcoreapp3.1\FlureeTardigradeWorker.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\obj\Debug\netcoreapp3.1\FlureeTardigradeWorker.pdb
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\storj_uplink.dll
-\\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

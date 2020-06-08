@@ -8,8 +8,8 @@
     ".NETCoreApp,Version=v3.1": {
       "FlureeTardigradeWorker/1.0.0": {
         "dependencies": {
+          "Microsoft.Extensions.Configuration.UserSecrets": "3.1.1",
           "Microsoft.Extensions.Hosting": "3.1.1",
-          "Newtonsoft.Json": "12.0.3",
           "Pulumi": "2.0.0-beta.2",
           "Pulumi.Gcp": "3.0.0-preview-beta.1",
           "uplink.NET": "1.5.4"
@@ -441,14 +441,6 @@
           "System.Threading.Timer": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XDocument": "4.3.0"
-        }
-      },
-      "Newtonsoft.Json/12.0.3": {
-        "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "12.0.0.0",
-            "fileVersion": "12.0.3.23909"
-          }
         }
       },
       "OneOf/2.1.151": {
@@ -1431,13 +1423,6 @@
       "sha512": "sha512-WcSp3+vP+yHNgS8EV5J7pZ9IRpeDuARBPN28by8zqff1wJQXm26PVU8L3/fYLBJVU7BtDyqNVWq2KlCVvSSR4A==",
       "path": "netstandard.library/1.6.1",
       "hashPath": "netstandard.library.1.6.1.nupkg.sha512"
-    },
-    "Newtonsoft.Json/12.0.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
-      "path": "newtonsoft.json/12.0.3",
-      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
     "OneOf/2.1.151": {
       "type": "package",
