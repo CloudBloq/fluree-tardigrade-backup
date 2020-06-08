@@ -1,41 +1,57 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting; 
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using uplink.NET.Models;
 using uplink.NET.Services;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FlureeTardigradeWorker
 {
 
     public interface IBackupService
     {
-        Task<FileObject> GetFlureeSnapshot(string fileName);
+        Task<FileObject> GetFlureeSnapshot();
         Task<int> UploadToCloud();
+        Task<string> CreateSnapshot(string databaseName);
     }
     public  class BackupService:IBackupService
     {
         private readonly IHostEnvironment _hostEnvironment;
         private readonly IConfiguration _configuration;
+       
 
         public BackupService(IHostEnvironment hostEnvironment, IConfiguration configuration)
         {
             _hostEnvironment = hostEnvironment;
             _configuration = configuration;
-//            var builder = new ConfigurationBuilder()
-//                .SetBasePath(hostEnvironment.ContentRootPath)
-//                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-//                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", optional: true)
-//                .AddEnvironmentVariables(); 
-//           Configuration = builder.Build();
+           
         }
-        public async Task<FileObject> GetFlureeSnapshot(string fileName)
+
+        public async Task<string> CreateSnapshot(string databaseName)
         {
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:8080");
+            var payload = JsonConvert.SerializeObject(new CreateSnapshotModel {DbId = databaseName});
+            var response = await client.PostAsync($"fdb/local/{databaseName}/snapshot", new StringContent(payload));
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                throw new Exception("Service Unavailable");
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadAsStringAsync();
+            return result;
+
+        }
+        public async Task<FileObject> GetFlureeSnapshot()
+        {
+            var result = await CreateSnapshot("local/firstdb");
             var path = _hostEnvironment.ContentRootPath;
-            var files = Directory.GetFiles($"{path}/Snapshots");
-            var file = files.FirstOrDefault(x => x.Contains(fileName)) ?? throw new Exception($"File does not exist");
+            var files = Directory.GetFiles( @"\flureedb\data\ledger\local\testmydb\snapshot");
+            var file = files.FirstOrDefault(x => x.Contains(result)) ?? throw new Exception($"File does not exist");
             var fileByte = await File.ReadAllBytesAsync(file);
             var fileInfo = new FileInfo(file);
             return new FileObject
@@ -65,7 +81,7 @@ namespace FlureeTardigradeWorker
             var newBucketName = "flureebucket";
              
             var bucket = await restrictedBucketService.OpenBucketAsync(newBucketName);
-            var fileObject = await GetFlureeSnapshot("1584526996862.avro");
+            var fileObject = await GetFlureeSnapshot();
             var uploadOperationRestricted = await objectService.UploadObjectAsync(bucket, fileObject.FileName, new UploadOptions(), fileObject.File, true);
             uploadOperationRestricted.UploadOperationProgressChanged += UploadOperationRestricted_UploadOperationProgressChanged;
             uploadOperationRestricted.UploadOperationEnded += UploadOperationRestricted_UploadOperationEnded;
@@ -135,6 +151,13 @@ namespace FlureeTardigradeWorker
     {
         public byte[] File { get; set; }
         public string FileName { get; set; }
-    } 
-    
+    }
+
+    public class CreateSnapshotModel
+    {
+        [JsonProperty("db/id")]
+        public string DbId { get; set; }
+
+    }
+
 }
