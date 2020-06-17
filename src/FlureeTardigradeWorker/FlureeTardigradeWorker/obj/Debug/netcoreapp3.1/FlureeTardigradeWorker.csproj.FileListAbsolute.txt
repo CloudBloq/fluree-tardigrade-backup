@@ -34,6 +34,7 @@
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+\\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\OneOf.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\Pulumi.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\Pulumi.Gcp.dll
@@ -49,6 +50,9 @@
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\runtimes\win\native\grpc_csharp_ext.x64.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\runtimes\win\native\grpc_csharp_ext.x86.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.EventLog.dll
+\\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\runtimes\ios\native\libstorj_uplink.dylib
+\\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\runtimes\linux-x64\native\storj_uplink.so
+\\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\runtimes\osx-x64\native\storj_uplink.dylib
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\storj_uplink.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\storj_uplink.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\obj\Debug\netcoreapp3.1\FlureeTardigradeWorker.csprojAssemblyReference.cache
@@ -57,4 +61,3 @@
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\obj\Debug\netcoreapp3.1\FlureeTardigradeWorker.csproj.CopyComplete
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\obj\Debug\netcoreapp3.1\FlureeTardigradeWorker.dll
 \\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\obj\Debug\netcoreapp3.1\FlureeTardigradeWorker.pdb
-\\Mac\Home\Documents\Projects\Aspnet\Cloudbloq\fluree-tardigrade-backup\src\FlureeTardigradeWorker\FlureeTardigradeWorker\bin\Debug\netcoreapp3.1\storj_uplink.dll

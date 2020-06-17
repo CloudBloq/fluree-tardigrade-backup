@@ -25,7 +25,7 @@ namespace FlureeTardigradeWorker
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                 var result = await _backupService.UploadToCloud();
+                 var result = await _backupService.UploadLargeFilesToCloud();
                 _logger.LogInformation("Worker Completed at: {time} With result {res}", DateTimeOffset.Now, result);
                 await Task.Delay(5000, stoppingToken);
             }

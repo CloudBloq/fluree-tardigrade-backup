@@ -513,7 +513,7 @@
           "lib/netstandard1.3/OneOf.dll": {}
         }
       },
-      "Pulumi/2.0.0-beta.2": {
+      "Pulumi/2.5.0-alpha.1592360826": {
         "type": "package",
         "dependencies": {
           "Google.Protobuf": "3.10.0",
@@ -525,16 +525,16 @@
           "System.Collections.Immutable": "1.6.0"
         },
         "compile": {
-          "lib/netcoreapp3.0/Pulumi.dll": {}
+          "lib/netcoreapp3.1/Pulumi.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.0/Pulumi.dll": {}
+          "lib/netcoreapp3.1/Pulumi.dll": {}
         }
       },
-      "Pulumi.Gcp/3.0.0-preview-beta.1": {
+      "Pulumi.Gcp/3.10.0": {
         "type": "package",
         "dependencies": {
-          "Pulumi": "2.0.0-beta.2",
+          "Pulumi": "2.4.0",
           "System.Collections.Immutable": "1.6.0"
         },
         "compile": {
@@ -1776,7 +1776,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "uplink.NET/1.5.4": {
+      "uplink.NET/2.3.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/uplink.NET.dll": {}
@@ -1784,10 +1784,19 @@
         "runtime": {
           "lib/netstandard2.0/uplink.NET.dll": {}
         },
-        "build": {
-          "build/uplink.NET.targets": {}
-        },
         "runtimeTargets": {
+          "runtimes/ios/native/libstorj_uplink.dylib": {
+            "assetType": "native",
+            "rid": "ios"
+          },
+          "runtimes/linux-x64/native/storj_uplink.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-x64/native/storj_uplink.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
           "runtimes/win-x64/native/storj_uplink.dll": {
             "assetType": "native",
             "rid": "win-x64"
@@ -2461,24 +2470,24 @@
         "oneof.nuspec"
       ]
     },
-    "Pulumi/2.0.0-beta.2": {
-      "sha512": "tXYJnMh5AG4hO2V8uK5dbVphrAu074xSTQWD/BOJUL3OgozKVn3ULN3+f2sR19/mci3lyxX99Mh8WjkhiF+miw==",
+    "Pulumi/2.5.0-alpha.1592360826": {
+      "sha512": "Krubi4p0i0zrn/7JokeXmseNVBWo57CX5IrurixQp4EO5trVn7RExlovnm+kIgPgUFwvQhTyq+8pvU8LVdeRYg==",
       "type": "package",
-      "path": "pulumi/2.0.0-beta.2",
+      "path": "pulumi/2.5.0-alpha.1592360826",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/netcoreapp3.0/Pulumi.dll",
-        "lib/netcoreapp3.0/Pulumi.xml",
-        "pulumi.2.0.0-beta.2.nupkg.sha512",
+        "lib/netcoreapp3.1/Pulumi.dll",
+        "lib/netcoreapp3.1/Pulumi.xml",
+        "pulumi.2.5.0-alpha.1592360826.nupkg.sha512",
         "pulumi.nuspec",
         "pulumi_logo_64x64.png"
       ]
     },
-    "Pulumi.Gcp/3.0.0-preview-beta.1": {
-      "sha512": "2IWVIDk1l+niwaqeeXDHWTsMhD/I614w/2xepk35cprJmLHqV5GXMspQshZd5iUBkIULtAkNfQiRtyAIGOGS7g==",
+    "Pulumi.Gcp/3.10.0": {
+      "sha512": "DiR7MreAmfOXg0Y51kXFqA/th3ljAwzHrizWA2NQFsIqVsWuerZ2beLE+5gT5OSFLIf6e78kjDnF0mqAGJ3x7Q==",
       "type": "package",
-      "path": "pulumi.gcp/3.0.0-preview-beta.1",
+      "path": "pulumi.gcp/3.10.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2487,7 +2496,7 @@
         "lib/netcoreapp3.1/Pulumi.Gcp.dll",
         "lib/netcoreapp3.1/Pulumi.Gcp.xml",
         "logo.png",
-        "pulumi.gcp.3.0.0-preview-beta.1.nupkg.sha512",
+        "pulumi.gcp.3.10.0.nupkg.sha512",
         "pulumi.gcp.nuspec"
       ]
     },
@@ -5844,21 +5853,32 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "uplink.NET/1.5.4": {
-      "sha512": "T1gfMEYM8OBZqLtt0zzrVgP3URJg9h3jBq1MPJdA8PXIY6A8TkFz2yJYPrTVlDnXLl/tRBDjlqUewwA+E48+pA==",
+    "uplink.NET/2.3.1": {
+      "sha512": "brfVTyGbyiYnAqdvXUrPWqX+DH/3olY6i6UnbZHgCQA7zs0P1eHY8Ej2QTcB4Hzuftc3+L03qbPPtHUBEaf0HA==",
       "type": "package",
-      "path": "uplink.net/1.5.4",
+      "path": "uplink.net/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "build/uplink.NET.targets",
-        "images/Storj-symbol.png",
-        "lib/MonoAndroid/uplink.NET.Droid.dll",
-        "lib/net47/uplink.NET.dll",
+        "Storj-symbol.png",
+        "build/MonoAndroid/uplink.NET.targets",
+        "build/net40/uplink.NET.targets",
+        "build/xamarin.ios10/uplink.NET.targets",
+        "build/xamarinios/uplink.NET.targets",
+        "build/xamarinmac/uplink.NET.targets",
         "lib/netstandard2.0/uplink.NET.dll",
+        "runtimes/ios/native/libstorj_uplink.dylib",
+        "runtimes/linux-x64/native/storj_uplink.so",
+        "runtimes/native/libs/arm64-v8a/libstorj_uplink.so",
+        "runtimes/native/libs/armeabi-v7a/libstorj_uplink.so",
+        "runtimes/native/libs/ios/libstorj_uplink.dylib",
+        "runtimes/native/libs/mac/libstorj_uplink.dylib",
+        "runtimes/native/libs/x86/libstorj_uplink.so",
+        "runtimes/native/libs/x86_64/libstorj_uplink.so",
+        "runtimes/osx-x64/native/storj_uplink.dylib",
         "runtimes/win-x64/native/storj_uplink.dll",
         "runtimes/win-x86/native/storj_uplink.dll",
-        "uplink.net.1.5.4.nupkg.sha512",
+        "uplink.net.2.3.1.nupkg.sha512",
         "uplink.net.nuspec"
       ]
     }
@@ -5868,9 +5888,9 @@
       "Microsoft.Extensions.Configuration.UserSecrets >= 3.1.1",
       "Microsoft.Extensions.Hosting >= 3.1.1",
       "Newtonsoft.Json >= 12.0.3",
-      "Pulumi >= 2.0.0-beta.2",
-      "Pulumi.Gcp >= 3.0.0-preview-beta.1",
-      "uplink.NET >= 1.5.4"
+      "Pulumi >= 2.5.0-alpha.1592360826",
+      "Pulumi.Gcp >= 3.10.0",
+      "uplink.NET >= 2.3.1"
     ]
   },
   "packageFolders": {
@@ -5928,15 +5948,15 @@
           },
           "Pulumi": {
             "target": "Package",
-            "version": "[2.0.0-beta.2, )"
+            "version": "[2.5.0-alpha.1592360826, )"
           },
           "Pulumi.Gcp": {
             "target": "Package",
-            "version": "[3.0.0-preview-beta.1, )"
+            "version": "[3.10.0, )"
           },
           "uplink.NET": {
             "target": "Package",
-            "version": "[1.5.4, )"
+            "version": "[2.3.1, )"
           }
         },
         "imports": [

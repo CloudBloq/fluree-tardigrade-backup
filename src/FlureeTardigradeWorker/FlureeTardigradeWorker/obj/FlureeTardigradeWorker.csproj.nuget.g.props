@@ -13,9 +13,9 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Content Include="$(NuGetPackageRoot)pulumi.gcp\3.0.0-preview-beta.1\contentFiles\any\netcoreapp3.1\version.txt" Condition="Exists('$(NuGetPackageRoot)pulumi.gcp\3.0.0-preview-beta.1\contentFiles\any\netcoreapp3.1\version.txt')">
+    <Content Include="$(NuGetPackageRoot)pulumi.gcp\3.10.0\contentFiles\any\netcoreapp3.1\version.txt" Condition="Exists('$(NuGetPackageRoot)pulumi.gcp\3.10.0\contentFiles\any\netcoreapp3.1\version.txt')">
       <NuGetPackageId>Pulumi.Gcp</NuGetPackageId>
-      <NuGetPackageVersion>3.0.0-preview-beta.1</NuGetPackageVersion>
+      <NuGetPackageVersion>3.10.0</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Private>False</Private>
       <Link>version.txt</Link>
