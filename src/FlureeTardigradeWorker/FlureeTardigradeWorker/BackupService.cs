@@ -16,21 +16,59 @@ namespace FlureeTardigradeWorker
 
     public interface IBackupService
     {
-        Task<FileObject> GetFlureeSnapshot();
+        Task<FileObject> GetFlureeSnapshot(string fileName);
         Task<int> UploadToCloud();
+        Task<int> UploadLargeFilesToCloud();
         Task<string> CreateSnapshot(string databaseName);
     }
     public  class BackupService:IBackupService
     {
         private readonly IHostEnvironment _hostEnvironment;
         private readonly IConfiguration _configuration;
-       
+        private readonly Access access;
+        private readonly ObjectService objectService;
 
         public BackupService(IHostEnvironment hostEnvironment, IConfiguration configuration)
         {
             _hostEnvironment = hostEnvironment;
             _configuration = configuration;
-           
+            uplink.NET.Models.Access.SetTempDirectory(System.IO.Path.GetTempPath());
+            var apiKey = _configuration["TardigradeCredential:ApiKey"];
+            var secret = _configuration["TardigradeCredential:Secret"];
+            var satelliteAddress = _configuration["TardigradeCredential:SatelliteAddress"];
+             access = new uplink.NET.Models.Access(apiKey, satelliteAddress, secret);
+             objectService = new ObjectService(access);
+
+        }
+
+        public async  Task<int> UploadLargeFilesToCloud()
+        {
+            #region "for large file upload; but the below code doesn't work porperly as it cann't append data at tardigrade server side;"
+            var restrictedBucketService = new BucketService(access);
+
+            var newBucketName = "flureebucket";
+            var file = await GetFlureeSnapshot("file.mp4");
+            var bucket = await restrictedBucketService.GetBucketAsync(newBucketName);
+            using Stream source = File.OpenRead(file.FileName);
+            int chunkSize = 4 * 1024 * 1024;
+            long uploadSize = chunkSize;
+            byte[] buffer = new byte[chunkSize];
+            int bytesRead; 
+            while ((bytesRead = source.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                var uploadOperationRestricted = await objectService.UploadObjectAsync(bucket, file.FileName, new UploadOptions(), buffer, true);
+                uploadOperationRestricted.UploadOperationProgressChanged += UploadOperationRestricted_UploadOperationProgressChanged;
+                uploadOperationRestricted.UploadOperationEnded += UploadOperationRestricted_UploadOperationEnded;
+                await uploadOperationRestricted.StartUploadAsync();
+
+                var mb = ((float)uploadSize / (float)file.File.Length) * 100;
+                Console.WriteLine($"{mb} % uploaded");
+                uploadSize += chunkSize;
+            }
+
+            return 0;
+
+            #endregion
         }
 
         public async Task<string> CreateSnapshot(string databaseName)
@@ -46,12 +84,12 @@ namespace FlureeTardigradeWorker
             return result;
 
         }
-        public async Task<FileObject> GetFlureeSnapshot()
+        public async Task<FileObject> GetFlureeSnapshot(string fileName)
         {
-            var result = await CreateSnapshot("local/firstdb");
+           // var result = await CreateSnapshot("local/firstdb");
             var path = _hostEnvironment.ContentRootPath;
-            var files = Directory.GetFiles( @"\flureedb\data\ledger\local\testmydb\snapshot");
-            var file = files.FirstOrDefault(x => x.Contains(result)) ?? throw new Exception($"File does not exist");
+            var files = Directory.GetFiles( $"{path}/Snapshots");
+            var file = files.FirstOrDefault(x => x.Contains(fileName)) ?? throw new Exception($"File does not exist");
             var fileByte = await File.ReadAllBytesAsync(file);
             var fileInfo = new FileInfo(file);
             return new FileObject
@@ -62,26 +100,21 @@ namespace FlureeTardigradeWorker
         }
         public async Task<int> UploadToCloud()
         {
-            uplink.NET.Models.Scope.SetTempDirectory(System.IO.Path.GetTempPath());
-            var apiKey = _configuration["TardigradeCredential:ApiKey"];
-            var secret = _configuration["TardigradeCredential:Secret"];
-            var satelliteAddress = _configuration["TardigradeCredential:SatelliteAddress"]; 
-            var scope = new uplink.NET.Models.Scope(apiKey, satelliteAddress, secret);
-            var objectService = new ObjectService();
+           
             // Listing buckets.
-            var bucketService = new BucketService(scope);
-            var listBucketOptions = new BucketListOptions();
-            var buckets = await bucketService.ListBucketsAsync(listBucketOptions);
-            foreach (BucketInfo b in buckets.Items)
+            var bucketService = new BucketService(access);
+          
+            var buckets = await bucketService.ListBucketsAsync(new ListBucketsOptions());
+            foreach (var b in buckets.Items)
             {
                 Console.WriteLine(b.Name);
             } 
-            var restrictedBucketService = new BucketService(scope); 
+            var restrictedBucketService = new BucketService(access); 
 
             var newBucketName = "flureebucket";
              
-            var bucket = await restrictedBucketService.OpenBucketAsync(newBucketName);
-            var fileObject = await GetFlureeSnapshot();
+            var bucket = await restrictedBucketService.GetBucketAsync(newBucketName);
+            var fileObject = await GetFlureeSnapshot("1585578518736.avro");
             var uploadOperationRestricted = await objectService.UploadObjectAsync(bucket, fileObject.FileName, new UploadOptions(), fileObject.File, true);
             uploadOperationRestricted.UploadOperationProgressChanged += UploadOperationRestricted_UploadOperationProgressChanged;
             uploadOperationRestricted.UploadOperationEnded += UploadOperationRestricted_UploadOperationEnded;
@@ -89,16 +122,13 @@ namespace FlureeTardigradeWorker
 
 
             // Download a file from a bucket.
-            var listOptions = new ListOptions
-            {
-                Direction = ListDirection.STORJ_AFTER
-            };
-            var objects = await objectService.ListObjectsAsync(bucket, listOptions);
+            
+            var objects = await objectService.ListObjectsAsync(bucket, new ListObjectsOptions());
 
             foreach (var obj in objects.Items)
             {
                 //work with the objects
-                Console.WriteLine($"Found {obj.Path} {obj.Version}");
+                Console.WriteLine($"Found {obj.Key} {obj.SystemMetaData.Created}");
 
 
                 //await objectService.DeleteObjectAsync(bucket, obj.Path);

@@ -55,15 +55,15 @@
             },
             "Pulumi": {
               "target": "Package",
-              "version": "[2.0.0-beta.2, )"
+              "version": "[2.5.0-alpha.1592360826, )"
             },
             "Pulumi.Gcp": {
               "target": "Package",
-              "version": "[3.0.0-preview-beta.1, )"
+              "version": "[3.10.0, )"
             },
             "uplink.NET": {
               "target": "Package",
-              "version": "[1.5.4, )"
+              "version": "[2.3.1, )"
             }
           },
           "imports": [
