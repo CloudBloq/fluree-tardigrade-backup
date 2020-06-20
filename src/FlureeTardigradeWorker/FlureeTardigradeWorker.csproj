@@ -10,8 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" /> 
-    <PackageReference Include="Pulumi" Version="2.5.0-alpha.1592360826" />
-    <PackageReference Include="Pulumi.Gcp" Version="3.10.0" />
+    <PackageReference Include="Pulumi" Version="2.5.0-alpha.1592526772" />
+    <PackageReference Include="Pulumi.Gcp" Version="3.11.0-alpha.1592409469" />
     <PackageReference Include="uplink.NET" Version="2.3.1" />
   </ItemGroup>
 </Project>
