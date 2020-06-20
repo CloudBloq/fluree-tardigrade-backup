@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -33,7 +34,8 @@ namespace FlureeTardigradeWorker
         {
             _hostEnvironment = hostEnvironment;
             _configuration = configuration;
-            uplink.NET.Models.Access.SetTempDirectory(System.IO.Path.GetTempPath());
+            var path = _hostEnvironment.ContentRootPath;
+            uplink.NET.Models.Access.SetTempDirectory($"{path}/Snapshots/Temp");
             var apiKey = _configuration["TardigradeCredential:ApiKey"];
             var secret = _configuration["TardigradeCredential:Secret"];
             var satelliteAddress = _configuration["TardigradeCredential:SatelliteAddress"]; 
@@ -42,67 +44,39 @@ namespace FlureeTardigradeWorker
 
         }
 
+
+        public async Task<FileObject> GetFlureeSnapshot(string fileName)
+        {
+            // var result = await CreateSnapshot("local/firstdb");
+            var path = _hostEnvironment.ContentRootPath;
+            var files = Directory.GetFiles($"{path}/Snapshots");
+            var file = files.FirstOrDefault(x => x.Contains(fileName)) ?? throw new Exception($"File does not exist");
+            var fileByte = await File.ReadAllBytesAsync(file);
+            var fileInfo = new FileInfo(file);
+            return new FileObject
+            {
+                File = fileByte,
+                FileInfo = fileInfo,
+                FileName = fileInfo.Name
+            };
+        }
+
         public async  Task<int> UploadLargeFilesToCloud()
         {
             #region "for large file upload; but the below code doesn't work porperly as it cann't append data at tardigrade server side;"
             var restrictedBucketService = new BucketService(access);
 
             var newBucketName = "flureebucket";
-            var file = await GetFlureeSnapshot("filemovie");
+            var file = await GetFlureeSnapshot("largefile");
             var bucket = await restrictedBucketService.GetBucketAsync(newBucketName);
-            using Stream source = file.FileInfo.OpenRead();
-//                long chunkSize = 1024 * 512;
-//                    byte[] bytesToUpload = GetRandomBytes(chunkSize);
-                     // Stream stream = new MemoryStream(bytesToUpload); 
-//            int chunkSize = 4 * 1024 * 1024;
-//            long uploadSize = chunkSize;
-//            byte[] buffer = new byte[chunkSize];
-//            int bytesRead;
-//            var customMetadata = new CustomMetadata();
-//            while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length)) > 0)
-//            {
-//                customMetadata.Entries = new List<CustomMetadataEntry>(bytesRead);
-//                    
-//               
-//
-////                uploadOperationRestricted.UploadOperationProgressChanged += UploadOperationRestricted_UploadOperationProgressChanged;
-////                uploadOperationRestricted.UploadOperationEnded += UploadOperationRestricted_UploadOperationEnded;
-////                await uploadOperationRestricted.StartUploadAsync();
-//
-//                var mb = ((float)uploadSize / (float)file.File.Length) * 100;
-//                Console.WriteLine($"{mb} % uploaded");
-//                uploadSize += chunkSize;
-//             
-//                //Console.WriteLine($"{uploadOperationRestricted.BytesSent}");
-//            }
-
-//            var uploadOperationRestricted = await objectService.UploadObjectChunkedAsync(bucket, file.FileName, new UploadOptions(),customMetadata);
-//            uploadOperationRestricted.WriteBytes(buffer);
-//            uploadOperationRestricted.Commit();
-//            Console.WriteLine(uploadOperationRestricted.ErrorMessage);
-
-            var uploadOperationRestricted = await objectService.UploadObjectAsync(bucket, file.FileName, new UploadOptions(),source, true);
-            uploadOperationRestricted.UploadOperationProgressChanged += UploadOperationRestricted_UploadOperationProgressChanged;
-            uploadOperationRestricted.UploadOperationEnded += UploadOperationRestricted_UploadOperationEnded;
-            await uploadOperationRestricted.StartUploadAsync();
-            Console.WriteLine($"{uploadOperationRestricted.BytesSent}");
-
-            //var mb = ((float)chunkSize / (float)file.File.Length) * 100;
-            // Console.WriteLine($"{mb} % uploaded");
-
-            await DownloadBytes(bucket, file.FileName);
-//            var objects = await objectService.ListObjectsAsync(bucket, new ListObjectsOptions());
-//
-//            foreach (var obj in objects.Items)
-//            {
-//                //work with the objects
-//                Console.WriteLine($"Found {obj.Key} {obj.SystemMetaData.Created}");
-//
-//               
-//                //await objectService.DeleteObjectAsync(bucket, obj.Path);
-//
-//            }
-
+            // using Stream source = file.FileInfo.OpenRead(); 
+            using (FileStream fileReader = new FileStream(file.FileInfo.FullName, FileMode.Open, FileAccess.Read))
+            {
+                var uploadOperationRestricted = await objectService.UploadObjectAsync(bucket, file.FileInfo.Name, new UploadOptions(), fileReader, false);
+                uploadOperationRestricted.UploadOperationProgressChanged += UploadOperationRestricted_UploadOperationProgressChanged;
+                uploadOperationRestricted.UploadOperationEnded += UploadOperationRestricted_UploadOperationEnded;
+                await uploadOperationRestricted.StartUploadAsync();
+            }
 
             return 0;
 
@@ -139,21 +113,7 @@ namespace FlureeTardigradeWorker
             return result;
 
         }
-        public async Task<FileObject> GetFlureeSnapshot(string fileName)
-        {
-           // var result = await CreateSnapshot("local/firstdb");
-            var path = _hostEnvironment.ContentRootPath;
-            var files = Directory.GetFiles( $"{path}/Snapshots");
-            var file = files.FirstOrDefault(x => x.Contains(fileName)) ?? throw new Exception($"File does not exist");
-            var fileByte = await File.ReadAllBytesAsync(file);
-            var fileInfo = new FileInfo(file);
-            return new FileObject
-            {
-                File = fileByte,
-                FileInfo = fileInfo,
-                FileName = fileInfo.Name
-            };
-        }
+       
         public async Task<int> UploadToCloud()
         {
            
@@ -209,7 +169,7 @@ namespace FlureeTardigradeWorker
 
         private static void UploadOperationRestricted_UploadOperationProgressChanged(UploadOperation uploadOperation)
         {
-            //Console.WriteLine($"{uploadOperation.ObjectName} {uploadOperation.PercentageCompleted}%");
+           Console.WriteLine($"{uploadOperation.ObjectName} {uploadOperation.PercentageCompleted}%");
             if (!string.IsNullOrEmpty(uploadOperation.ErrorMessage))
                 Console.WriteLine(uploadOperation.ErrorMessage);
         }

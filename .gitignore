@@ -348,3 +348,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+src/FlureeTardigradeWorker/.vs/FlureeTardigradeWorker/v16/Server/sqlite3/storage.ide-wal
+src/FlureeTardigradeWorker/FlureeTardigradeWorker/obj/Debug/netcoreapp3.1/FlureeTardigradeWorker.csprojAssemblyReference.cache
